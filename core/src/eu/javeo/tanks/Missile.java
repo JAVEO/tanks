@@ -24,7 +24,6 @@ public class Missile extends GameObject {
 
     }
 
-    @Override
     public void draw() {
         update();
         sprite.draw(batch);
