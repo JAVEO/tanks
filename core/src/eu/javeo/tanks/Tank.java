@@ -67,7 +67,7 @@ public class Tank extends GameObject {
                 updateComputer();
                 break;
         }
-
+        timeCounter += Gdx.graphics.getDeltaTime();
         sprite.draw(batch);
     }
 
@@ -119,7 +119,7 @@ public class Tank extends GameObject {
         }
         move(touchpadX, touchpadY);
         rotate(touchpadX, touchpadY);
-        timeCounter += Gdx.graphics.getDeltaTime();
+
     }
 
     private void move(float touchpadX, float touchpadY) {
@@ -160,5 +160,9 @@ public class Tank extends GameObject {
 
     public boolean isHuman() {
         return controlType == ControlType.HUMAN;
+    }
+
+    public Sprite getSprite() {
+        return sprite;
     }
 }

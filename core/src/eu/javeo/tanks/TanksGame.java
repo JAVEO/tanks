@@ -2,16 +2,17 @@ package eu.javeo.tanks;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -24,8 +25,8 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class TanksGame extends ApplicationAdapter {
-    public static final int SCREEN_WIDTH = 800;
-    public static final int SCREEN_HEIGHT = 480;
+    public static final int SCREEN_WIDTH = 1920;
+    public static final int SCREEN_HEIGHT = 1080;
 
     private SpriteBatch batch;
     private Stage stage;
@@ -45,17 +46,19 @@ public class TanksGame extends ApplicationAdapter {
 	
     private OrthographicCamera camera;
     private OrthoCachedTiledMapRenderer tiledMapRenderer;
+    Controls controls;
     private WallsCollisionManager wallsCollisionManager;
 
 	@Override
 	public void create () {
-		batch = new SpriteBatch();
+
+        batch = new SpriteBatch();
         loadTextures();
 
         StretchViewport viewport = new StretchViewport(SCREEN_WIDTH, SCREEN_HEIGHT);
         stage = new Stage(viewport, batch);
 
-        Controls controls = new Controls(stage);
+        controls = new Controls(stage);
         controls.init();
 
         tanks.add(new Tank(tankTexture, controls, batch, Tank.ControlType.HUMAN, createExplosionAnimation(), tiledMap));
@@ -64,32 +67,35 @@ public class TanksGame extends ApplicationAdapter {
         fireButton = createFireButton();
         stage.addActor(fireButton);
 
-        fireMissile();
+        tank = humanTank();
 
+        camera = createCamera();
+        tiledMap = new TmxMapLoader().load("levels/level.tmx");
+        tiledMapRenderer = new OrthoCachedTiledMapRenderer(tiledMap);
+        wallsCollisionManager = new WallsCollisionManager(tiledMap);
 
         Gdx.input.setInputProcessor(stage);
 
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.update();
-        tank = humanTank();
-
-        tiledMap = new TmxMapLoader().load("levels/level.tmx");
-        wallsCollisionManager = new WallsCollisionManager(tiledMap);
-        tiledMapRenderer = new OrthoCachedTiledMapRenderer(tiledMap);
     }
 
-	@Override
-	public void render () {
+    private OrthographicCamera createCamera() {
+        OrthographicCamera camera = new OrthographicCamera();
+        camera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
+        camera.update();
+        return camera;
+    }
 
-		Gdx.gl.glClearColor(1, 0, 0, 1);
+    @Override
+	public void render () {
+		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        camera.position.set(tank.getSprite().getX() + tank.getSprite().getWidth() / 2, tank.getSprite().getY() + tank.getSprite().getHeight() / 2, 0);
         camera.update();
+        batch.setProjectionMatrix(camera.combined);
+
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
-
-        
 
         batch.begin();
         fireMissile();
@@ -144,6 +150,6 @@ public class TanksGame extends ApplicationAdapter {
         for(Tank tank: tanks) {
             if(tank.isHuman()) return tank;
         }
-        return new Tank(tankTexture, batch, Tank.ControlType.HUMAN, createExplosionAnimation(), tiledMap);
+        return new Tank(tankTexture, controls, batch, Tank.ControlType.HUMAN, createExplosionAnimation(), tiledMap);
     }
 }
