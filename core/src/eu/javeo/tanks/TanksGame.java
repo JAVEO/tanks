@@ -46,13 +46,14 @@ public class TanksGame extends ApplicationAdapter {
     private OrthographicCamera camera;
     private OrthoCachedTiledMapRenderer tiledMapRenderer;
     private WallsCollisionManager wallsCollisionManager;
+    private GameObjectsManager gameObjectsManager;
 
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
         loadTextures();
-		tanks.add(new Tank(tankTexture, batch, Tank.ControlType.HUMAN, createExplosionAnimation(), tiledMap));
-        tanks.add(new Tank(tankTexture, batch, Tank.ControlType.COMPUTER, createExplosionAnimation(), tiledMap));
+		tanks.add(new Tank(tankTexture, batch, Tank.ControlType.HUMAN, createExplosionAnimation(), gameObjectsManager));
+        tanks.add(new Tank(tankTexture, batch, Tank.ControlType.COMPUTER, createExplosionAnimation(), gameObjectsManager));
 
 		touchpad = createTouchpad();
         StretchViewport viewport = new StretchViewport(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -70,6 +71,8 @@ public class TanksGame extends ApplicationAdapter {
         wallsCollisionManager = new WallsCollisionManager(tiledMap);
         tiledMapRenderer = new OrthoCachedTiledMapRenderer(tiledMap);
         Gdx.input.setInputProcessor(stage);
+
+        gameObjectsManager = new GameObjectsManager(tiledMap, tanks);
     }
 
 	@Override
@@ -120,7 +123,7 @@ public class TanksGame extends ApplicationAdapter {
 
     private void fireMissile() {
         if (fireButton.isPressed() && tank.canFire()) {
-            Missile missile = new Missile(missileTexture, tank.getPosition(), tank.getDirection(), batch, tiledMap);
+            Missile missile = new Missile(missileTexture, tank.getPosition(), tank.getDirection(), batch, gameObjectsManager);
             missiles.add(missile);
         }
     }
@@ -153,6 +156,6 @@ public class TanksGame extends ApplicationAdapter {
         for(Tank tank: tanks) {
             if(tank.isHuman()) return tank;
         }
-        return new Tank(tankTexture, batch, Tank.ControlType.HUMAN, createExplosionAnimation(), tiledMap);
+        return new Tank(tankTexture, batch, Tank.ControlType.HUMAN, createExplosionAnimation(), gameObjectsManager);
     }
 }
