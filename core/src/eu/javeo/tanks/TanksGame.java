@@ -5,7 +5,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -23,6 +25,7 @@ public class TanksGame extends ApplicationAdapter {
     private Stage stage;
     private Missile missile;
 
+    private Texture explosionTexture;
     private Texture tankTexture;
     private Tank tank;
     private Touchpad touchpad;
@@ -36,7 +39,7 @@ public class TanksGame extends ApplicationAdapter {
 	public void create () {
 		batch = new SpriteBatch();
         loadTextures();
-        tank = new Tank(tankTexture);
+        tank = new Tank(tankTexture, createExplosionAnimation());
 		touchpad = createTouchpad();
         fireMissile();
         StretchViewport viewport = new StretchViewport(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -79,6 +82,7 @@ public class TanksGame extends ApplicationAdapter {
     private void loadTextures() {
         tankTexture = new Texture("tank.png");
         missileTexture = new Texture("missile.png");
+        explosionTexture = new Texture("explosion.png");
     }
 
     private Touchpad createTouchpad() {
@@ -91,5 +95,10 @@ public class TanksGame extends ApplicationAdapter {
         touchpad = new Touchpad(10, touchpadStyle);
         touchpad.setBounds(15, 15, 120, 120);
         return touchpad;
+    }
+
+    private Animation createExplosionAnimation() {
+        TextureRegion[][] explosionFrames = TextureRegion.split(explosionTexture, 134, 134);
+        return new Animation(0.1f, explosionFrames[0]);
     }
 }
