@@ -17,8 +17,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.HashSet;
+import java.util.Set;
 
 public class TanksGame extends ApplicationAdapter {
     public static final int SCREEN_WIDTH = 800;
@@ -30,7 +30,7 @@ public class TanksGame extends ApplicationAdapter {
 
     private Texture explosionTexture;
     private Texture tankTexture;
-    private Queue<Tank> tanks = new ConcurrentLinkedQueue<Tank>();
+    private Set<Tank> tanks;
     private Touchpad touchpad;
     private TiledMap tiledMap;
 
@@ -43,6 +43,8 @@ public class TanksGame extends ApplicationAdapter {
 	public void create () {
 		batch = new SpriteBatch();
         loadTextures();
+
+		tanks = new HashSet<Tank>();
 		tanks.add(new Tank(tankTexture, batch, Tank.ControlType.HUMAN, createExplosionAnimation(), tiledMap));
         tanks.add(new Tank(tankTexture, batch, Tank.ControlType.COMPUTER, createExplosionAnimation(), tiledMap));
 
@@ -57,7 +59,7 @@ public class TanksGame extends ApplicationAdapter {
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.update();
 
-        tiledMap = new TmxMapLoader().load("levels/level.tmx");
+        tiledMap = new TmxMapLoader().load("levels/level1.tmx");
         tiledMapRenderer = new OrthoCachedTiledMapRenderer(tiledMap);
     }
 
