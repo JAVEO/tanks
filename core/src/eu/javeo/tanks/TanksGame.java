@@ -46,6 +46,7 @@ public class TanksGame extends ApplicationAdapter {
     private OrthographicCamera camera;
     private OrthoCachedTiledMapRenderer tiledMapRenderer;
     Controls controls;
+    private WallsCollisionManager wallsCollisionManager;
 
 	@Override
 	public void create () {
@@ -76,6 +77,7 @@ public class TanksGame extends ApplicationAdapter {
         tank = humanTank();
 
         tiledMap = new TmxMapLoader().load("levels/level.tmx");
+        wallsCollisionManager = new WallsCollisionManager(tiledMap);
         tiledMapRenderer = new OrthoCachedTiledMapRenderer(tiledMap);
     }
 
