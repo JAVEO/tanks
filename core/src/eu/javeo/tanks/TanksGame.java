@@ -45,16 +45,18 @@ public class TanksGame extends ApplicationAdapter {
 	
     private OrthographicCamera camera;
     private OrthoCachedTiledMapRenderer tiledMapRenderer;
+    Controls controls;
 
 	@Override
 	public void create () {
-		batch = new SpriteBatch();
+
+        batch = new SpriteBatch();
         loadTextures();
 
         StretchViewport viewport = new StretchViewport(SCREEN_WIDTH, SCREEN_HEIGHT);
         stage = new Stage(viewport, batch);
 
-        Controls controls = new Controls(stage);
+        controls = new Controls(stage);
         controls.init();
 
         tanks.add(new Tank(tankTexture, controls, batch, Tank.ControlType.HUMAN, createExplosionAnimation(), tiledMap));
@@ -142,6 +144,6 @@ public class TanksGame extends ApplicationAdapter {
         for(Tank tank: tanks) {
             if(tank.isHuman()) return tank;
         }
-        return new Tank(tankTexture, batch, Tank.ControlType.HUMAN, createExplosionAnimation(), tiledMap);
+        return new Tank(tankTexture, controls, batch, Tank.ControlType.HUMAN, createExplosionAnimation(), tiledMap);
     }
 }
