@@ -5,41 +5,50 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 public class TanksGame extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
-    Stage stage;
+    public static final int SCREEN_WIDTH = 800;
+    public static final int SCREEN_HEIGHT = 480;
+
+    private SpriteBatch batch;
+    private Stage stage;
+    private Missile missile;
+
     private Texture tankTexture;
     private Tank tank;
 
-    @Override
+
+    private Texture missileTexture;
+	
+	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
-        loadTexture();
+        loadTextures();
         tank = new Tank(tankTexture);
-
-        StretchViewport viewport = new StretchViewport(800, 480);
+        fireMissile();
+        StretchViewport viewport = new StretchViewport(480, 320);
         stage = new Stage(viewport, batch);
     }
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
+        missile.draw();
 		batch.draw(tankTexture, 0, 0);
 		batch.end();
-
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
 	}
 
-    private void loadTexture() {
+    private void fireMissile() {
+        missile = new Missile(missileTexture, new Vector2(50f,50f), new Vector2(0f,1f), batch);
+    }
 
+    private void loadTextures() {
         tankTexture = new Texture("tank.png");
+        missileTexture = new Texture("missile.png");
     }
 }
