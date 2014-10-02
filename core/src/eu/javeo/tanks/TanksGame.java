@@ -12,12 +12,17 @@ public class TanksGame extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
     Stage stage;
-	
-	@Override
+    private Texture tankTexture;
+    private Tank tank;
+
+    @Override
 	public void create () {
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
-        StretchViewport viewport = new StretchViewport(480, 320);
+        loadTexture();
+        tank = new Tank(tankTexture);
+
+        StretchViewport viewport = new StretchViewport(800, 480);
         stage = new Stage(viewport, batch);
     }
 
@@ -26,10 +31,15 @@ public class TanksGame extends ApplicationAdapter {
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
-		batch.draw(img, 0, 0);
+		batch.draw(tankTexture, 0, 0);
 		batch.end();
 
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
 	}
+
+    private void loadTexture() {
+
+        tankTexture = new Texture("tank.png");
+    }
 }
