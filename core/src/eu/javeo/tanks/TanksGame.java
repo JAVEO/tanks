@@ -57,7 +57,7 @@ public class TanksGame extends ApplicationAdapter {
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.update();
 
-        tiledMap = new TmxMapLoader().load("levels/level1.tmx");
+        tiledMap = new TmxMapLoader().load("levels/level.tmx");
         tiledMapRenderer = new OrthoCachedTiledMapRenderer(tiledMap);
     }
 
