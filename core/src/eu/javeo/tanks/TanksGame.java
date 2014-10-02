@@ -123,7 +123,7 @@ public class TanksGame extends ApplicationAdapter {
         TextureRegionDrawable buttonDrawable = new TextureRegionDrawable(new TextureRegion(fireButtonTexture));
         Button.ButtonStyle btnStyle = new Button.ButtonStyle(buttonDrawable, buttonDrawable, buttonDrawable);
         Button fireButton = new Button(btnStyle);
-        fireButton.setBounds(690, 10, 100, 100);
+        fireButton.setBounds(1750, 20, 150, 150);
         return fireButton;
     }
 

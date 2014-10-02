@@ -20,7 +20,7 @@ public class Controls extends GameObject {
 
     private Stage stage;
 
-    private float buttonSize = 50f;
+    private float buttonSize = 70f;
     private float buttonOffset = 100f;
 
     private float centerX = 75f;
