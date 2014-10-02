@@ -1,6 +1,7 @@
 package eu.javeo.tanks;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -12,8 +13,11 @@ public class Tank extends GameObject {
     private final ControlType controlType;
     private SpriteBatch batch;
     enum ControlType {HUMAN, COMPUTER};
+    private Explosion explosion;
+    private Animation explosionAnimation;
 
-    public Tank(Texture tankTexture, SpriteBatch batch, ControlType controlType) {
+    public Tank(Texture tankTexture, SpriteBatch batch, ControlType controlType, Animation explosionAnimation) {
+		this.explosionAnimation = explosionAnimation;
         this.tankTexture = tankTexture;
         this.controlType = controlType;
         sprite = new Sprite(tankTexture);
@@ -80,5 +84,9 @@ public class Tank extends GameObject {
     private void rotate(float touchpadX, float touchpadY) {
         float rotation = (float) Math.atan2(touchpadX, touchpadY) * MathUtils.radiansToDegrees;
         sprite.setRotation(-rotation);
+    }
+
+    public void destroy() {
+        explosion = new Explosion(explosionAnimation, sprite.getX(), sprite.getY());
     }
 }
