@@ -10,7 +10,6 @@ public class Missile extends GameObject {
     private final static float SPEED = 1f;
     private Sprite sprite;
     private Vector2 direction;
-    private SpriteBatch batch;
 
     public Missile(Texture texture, Vector2 position, Vector2 direction, SpriteBatch batch) {
         this.batch = batch;
