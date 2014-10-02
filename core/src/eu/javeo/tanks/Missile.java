@@ -8,7 +8,8 @@ import com.badlogic.gdx.math.Vector2;
 
 
 public class Missile extends GameObject {
-    private final static float SPEED = 1f;
+    private final static float SPEED = 7f;
+    private Sprite sprite;
     private Vector2 direction;
     private SpriteBatch batch;
 
@@ -21,9 +22,7 @@ public class Missile extends GameObject {
     }
 
     @Override
-    public void init() {
-
-    }
+    public void init() {}
 
     public void draw() {
         update();
