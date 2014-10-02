@@ -18,4 +18,12 @@ public abstract class GameObject {
     public boolean collidesWith(GameObject another) {
         return sprite.getBoundingRectangle().overlaps(another.sprite.getBoundingRectangle());
     }
+
+    public Sprite getSprite() {
+        return sprite;
+    }
+
+    public void setSprite(Sprite sprite) {
+        this.sprite = sprite;
+    }
 }
