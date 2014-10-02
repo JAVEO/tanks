@@ -17,6 +17,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 public class TanksGame extends ApplicationAdapter {
     public static final int SCREEN_WIDTH = 800;
     public static final int SCREEN_HEIGHT = 480;
@@ -27,7 +30,7 @@ public class TanksGame extends ApplicationAdapter {
 
     private Texture explosionTexture;
     private Texture tankTexture;
-    private Tank tank;
+    private Queue<Tank> tanks = new ConcurrentLinkedQueue<Tank>();
     private Touchpad touchpad;
     private TiledMap tiledMap;
 
@@ -35,14 +38,13 @@ public class TanksGame extends ApplicationAdapter {
 	
     private OrthographicCamera camera;
     private OrthoCachedTiledMapRenderer tiledMapRenderer;
-    private Tank computerTank;
 
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
         loadTextures();
-        tank = new Tank(tankTexture, batch, Tank.ControlType.HUMAN, createExplosionAnimation(), tiledMap);
-        computerTank = new Tank(tankTexture, batch, Tank.ControlType.COMPUTER, createExplosionAnimation(), tiledMap);
+		tanks.add(new Tank(tankTexture, createExplosionAnimation(), tiledMap));
+        tanks.add(new Tank(tankTexture, batch, Tank.ControlType.COMPUTER, createExplosionAnimation(), tiledMap););
 
 		touchpad = createTouchpad();
         fireMissile();
@@ -68,13 +70,17 @@ public class TanksGame extends ApplicationAdapter {
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
 
-        tank.update(touchpad.getKnobPercentX(), touchpad.getKnobPercentY());
-        computerTank.update(touchpad.getKnobPercentX(), touchpad.getKnobPercentY());
+        for (Tank tank : tanks) {
+            tank.update(touchpad.getKnobPercentX(), touchpad.getKnobPercentY());
+        }
 
 		batch.begin();
         missile.draw();
-		tank.draw();
-        computerTank.draw();
+
+        for (Tank tank : tanks) {
+            tank.draw(batch);
+        }
+
 		batch.end();
 
         stage.act(Gdx.graphics.getDeltaTime());
