@@ -5,15 +5,17 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.MathUtils;
 
 public class Tank extends GameObject {
     private static final float SPEED = 4f;
-    private final Sprite sprite;
+
     private Explosion explosion;
     private Animation explosionAnimation;
 
-    public Tank(Texture tankTexture, Animation explosionAnimation) {
+    public Tank(Texture tankTexture, Animation explosionAnimation, TiledMap map) {
+        this.map = map;
         this.explosionAnimation = explosionAnimation;
         sprite = new Sprite(tankTexture);
         sprite.setY(0);

@@ -3,16 +3,17 @@ package eu.javeo.tanks;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 
 
 public class Missile extends GameObject {
     private final static float SPEED = 1f;
-    private Sprite sprite;
     private Vector2 direction;
     private SpriteBatch batch;
 
-    public Missile(Texture texture, Vector2 position, Vector2 direction, SpriteBatch batch) {
+    public Missile(Texture texture, Vector2 position, Vector2 direction, SpriteBatch batch, TiledMap map) {
+        this.map = map;
         this.batch = batch;
         this.direction = direction;
         this.sprite = new Sprite(texture);
