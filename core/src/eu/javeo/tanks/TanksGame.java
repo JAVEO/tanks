@@ -17,8 +17,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class TanksGame extends ApplicationAdapter {
     public static final int SCREEN_WIDTH = 800;
@@ -30,7 +30,7 @@ public class TanksGame extends ApplicationAdapter {
 
     private Texture explosionTexture;
     private Texture tankTexture;
-    private Set<Tank> tanks;
+    private Queue<Tank> tanks = new ConcurrentLinkedQueue<Tank>();
     private Touchpad touchpad;
     private TiledMap tiledMap;
 
@@ -43,7 +43,6 @@ public class TanksGame extends ApplicationAdapter {
 	public void create () {
 		batch = new SpriteBatch();
         loadTextures();
-		tanks = new HashSet<Tank>();
         tanks.add(new Tank(tankTexture, createExplosionAnimation(), tiledMap));
 		touchpad = createTouchpad();
         fireMissile();
@@ -69,13 +68,18 @@ public class TanksGame extends ApplicationAdapter {
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
 
-		for (Tank tank: tanks) {
-			tank.update(touchpad.getKnobPercentX(), touchpad.getKnobPercentY());
-			batch.begin();
-			missile.draw();
-			tank.draw(batch);
-			batch.end();
-		}
+        for (Tank tank : tanks) {
+            tank.update(touchpad.getKnobPercentX(), touchpad.getKnobPercentY());
+        }
+
+		batch.begin();
+        missile.draw();
+
+        for (Tank tank : tanks) {
+            tank.draw(batch);
+        }
+
+		batch.end();
 
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
