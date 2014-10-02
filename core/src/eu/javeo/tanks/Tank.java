@@ -1,9 +1,11 @@
 package eu.javeo.tanks;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.MathUtils;
 
 public class Tank extends GameObject {
@@ -16,7 +18,8 @@ public class Tank extends GameObject {
     private Explosion explosion;
     private Animation explosionAnimation;
 
-    public Tank(Texture tankTexture, SpriteBatch batch, ControlType controlType, Animation explosionAnimation) {
+    public Tank(Texture tankTexture, SpriteBatch batch, ControlType controlType, Animation explosionAnimation, TiledMap map) {
+		this.map = map;
 		this.explosionAnimation = explosionAnimation;
         this.tankTexture = tankTexture;
         this.controlType = controlType;

@@ -29,6 +29,7 @@ public class TanksGame extends ApplicationAdapter {
     private Texture tankTexture;
     private Tank tank;
     private Touchpad touchpad;
+    private TiledMap tiledMap;
 
     private Texture missileTexture;
 	
@@ -40,8 +41,8 @@ public class TanksGame extends ApplicationAdapter {
 	public void create () {
 		batch = new SpriteBatch();
         loadTextures();
-        tank = new Tank(tankTexture, batch, Tank.ControlType.HUMAN, createExplosionAnimation());
-        computerTank = new Tank(tankTexture, batch, Tank.ControlType.COMPUTER, createExplosionAnimation());
+        tank = new Tank(tankTexture, batch, Tank.ControlType.HUMAN, createExplosionAnimation(), tiledMap);
+        computerTank = new Tank(tankTexture, batch, Tank.ControlType.COMPUTER, createExplosionAnimation(), tiledMap);
 
 		touchpad = createTouchpad();
         fireMissile();
@@ -54,7 +55,7 @@ public class TanksGame extends ApplicationAdapter {
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.update();
 
-        TiledMap tiledMap = new TmxMapLoader().load("levels/level1.tmx");
+        tiledMap = new TmxMapLoader().load("levels/level1.tmx");
         tiledMapRenderer = new OrthoCachedTiledMapRenderer(tiledMap);
     }
 
@@ -81,7 +82,7 @@ public class TanksGame extends ApplicationAdapter {
 	}
 
     private void fireMissile() {
-        missile = new Missile(missileTexture, new Vector2(50f,50f), new Vector2(0f,1f), batch);
+        missile = new Missile(missileTexture, new Vector2(50f,50f), new Vector2(0f,1f), batch, tiledMap);
     }
 
     private void loadTextures() {
