@@ -8,5 +8,5 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public abstract class GameObject {
 
     public abstract void init();
-    public void draw(SpriteBatch batch) {}
+    public void draw() {}
 }

@@ -31,12 +31,15 @@ public class TanksGame extends ApplicationAdapter {
 	
     private OrthographicCamera camera;
     private OrthoCachedTiledMapRenderer tiledMapRenderer;
+    private Tank computerTank;
 
-	@Override
+    @Override
 	public void create () {
 		batch = new SpriteBatch();
         loadTextures();
-        tank = new Tank(tankTexture);
+        tank = new Tank(tankTexture, batch, Tank.ControlType.HUMAN);
+        computerTank = new Tank(tankTexture, batch, Tank.ControlType.COMPUTER);
+
 		touchpad = createTouchpad();
         fireMissile();
         StretchViewport viewport = new StretchViewport(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -62,10 +65,12 @@ public class TanksGame extends ApplicationAdapter {
         tiledMapRenderer.render();
 
         tank.update(touchpad.getKnobPercentX(), touchpad.getKnobPercentY());
+        computerTank.update(touchpad.getKnobPercentX(), touchpad.getKnobPercentY());
 
 		batch.begin();
         missile.draw();
-		tank.draw(batch);
+		tank.draw();
+        computerTank.draw();
 		batch.end();
 
         stage.act(Gdx.graphics.getDeltaTime());
