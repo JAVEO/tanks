@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  */
 public abstract class GameObject {
 
+    protected SpriteBatch batch;
+
     public abstract void init();
-    public void draw() {}
+    public abstract void draw();
 }
