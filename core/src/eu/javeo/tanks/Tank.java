@@ -13,6 +13,7 @@ public class Tank extends GameObject {
     private static final float SPEED = 4f;
 
     private final Sprite sprite;
+    private Controls controls;
     private final Texture tankTexture;
     private final ControlType controlType;
     private SpriteBatch batch;
@@ -21,9 +22,10 @@ public class Tank extends GameObject {
     private Animation explosionAnimation;
     private float timeCounter = 0;
 
-    public Tank(Texture tankTexture, SpriteBatch batch, ControlType controlType, Animation explosionAnimation, TiledMap map) {
-		this.map = map;
-		this.explosionAnimation = explosionAnimation;
+    public Tank(Texture tankTexture, Controls controls, SpriteBatch batch, ControlType controlType, Animation explosionAnimation, TiledMap map) {
+        this.controls = controls;
+        this.map = map;
+        this.explosionAnimation = explosionAnimation;
         this.tankTexture = tankTexture;
         this.controlType = controlType;
         sprite = new Sprite(tankTexture);
@@ -47,24 +49,65 @@ public class Tank extends GameObject {
     }
 
     public void draw() {
-        sprite.draw(batch);
-    }
 
-    public void update(float touchpadX, float touchpadY) {
         switch (controlType) {
             case HUMAN:
-                updatePosition(touchpadX, touchpadY);
+                if (controls.up()) {
+                    Direction.UP.draw(sprite);
+                } else if (controls.down()) {
+                    Direction.DOWN.draw(sprite);
+                } else if (controls.right()) {
+                    Direction.RIGHT.draw(sprite);
+                } else if (controls.left()) {
+                    Direction.LEFT.draw(sprite);
+                }
                 break;
             case COMPUTER:
                 updateComputer();
                 break;
         }
+
+        sprite.draw(batch);
     }
 
     private void updateComputer() {
         float touchpadX = 1.0f;
         float touchpadY = 0.0f;
         updatePosition(touchpadX, touchpadY);
+    }
+
+    enum Direction {
+        UP {
+            @Override
+            void draw(Sprite tank) {
+                float y = tank.getY() + SPEED;
+                tank.setRotation(0f);
+                tank.setY(y);
+            }
+        }, DOWN {
+            @Override
+            void draw(Sprite tank) {
+                float y = tank.getY() - SPEED;
+                tank.setRotation(180f);
+                tank.setY(y);
+            }
+        }, LEFT {
+            @Override
+            void draw(Sprite tank) {
+                float x = tank.getX() - SPEED;
+                tank.setRotation(90f);
+                tank.setX(x);
+            }
+        }, RIGHT {
+            @Override
+            void draw(Sprite tank) {
+                float x = tank.getX() + SPEED;
+                tank.setRotation(270f);
+                tank.setX(x);
+            }
+        };
+
+        abstract void draw(Sprite tank);
     }
 
     private void updatePosition(float touchpadX, float touchpadY) {
