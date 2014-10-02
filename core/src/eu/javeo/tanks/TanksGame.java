@@ -43,8 +43,10 @@ public class TanksGame extends ApplicationAdapter {
 	public void create () {
 		batch = new SpriteBatch();
         loadTextures();
-		tanks = new HashSet<Tank>();
-        tanks.add(new Tank(tankTexture, createExplosionAnimation(), tiledMap));
+
+		tanks.add(new Tank(tankTexture, batch, Tank.ControlType.HUMAN, createExplosionAnimation(), tiledMap));
+        tanks.add(new Tank(tankTexture, batch, Tank.ControlType.COMPUTER, createExplosionAnimation(), tiledMap));
+
 		touchpad = createTouchpad();
         fireMissile();
         StretchViewport viewport = new StretchViewport(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -69,13 +71,18 @@ public class TanksGame extends ApplicationAdapter {
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
 
-		for (Tank tank: tanks) {
-			tank.update(touchpad.getKnobPercentX(), touchpad.getKnobPercentY());
-			batch.begin();
-			missile.draw();
-			tank.draw(batch);
-			batch.end();
-		}
+        for (Tank tank : tanks) {
+            tank.update(touchpad.getKnobPercentX(), touchpad.getKnobPercentY());
+        }
+
+		batch.begin();
+        missile.draw();
+
+        for (Tank tank : tanks) {
+            tank.draw();
+        }
+
+		batch.end();
 
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
