@@ -43,8 +43,8 @@ public class TanksGame extends ApplicationAdapter {
 	public void create () {
 		batch = new SpriteBatch();
         loadTextures();
-		tanks.add(new Tank(tankTexture, createExplosionAnimation(), tiledMap));
-        tanks.add(new Tank(tankTexture, batch, Tank.ControlType.COMPUTER, createExplosionAnimation(), tiledMap););
+		tanks.add(new Tank(tankTexture, batch, Tank.ControlType.HUMAN, createExplosionAnimation(), tiledMap));
+        tanks.add(new Tank(tankTexture, batch, Tank.ControlType.COMPUTER, createExplosionAnimation(), tiledMap));
 
 		touchpad = createTouchpad();
         fireMissile();
@@ -78,7 +78,7 @@ public class TanksGame extends ApplicationAdapter {
         missile.draw();
 
         for (Tank tank : tanks) {
-            tank.draw(batch);
+            tank.draw();
         }
 
 		batch.end();

@@ -1,6 +1,8 @@
 package eu.javeo.tanks;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 
 /**
  * Created by pstepniewski on 02.10.14.
