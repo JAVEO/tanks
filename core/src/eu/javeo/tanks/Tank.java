@@ -160,4 +160,8 @@ public class Tank extends GameObject {
     public boolean isHuman() {
         return controlType == ControlType.HUMAN;
     }
+
+    public Sprite getSprite() {
+        return sprite;
+    }
 }
