@@ -1,15 +1,12 @@
 package eu.javeo.tanks;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 /**
- * Created by marcinburczak on 02.10.14.
+ * Created by pstepniewski on 02.10.14.
  */
-public class GameObject {
+public abstract class GameObject {
 
-    public void init(){
-
-    }
-
-    public void draw(){
-
-    }
+    public abstract void init();
+    public void draw() {}
 }
