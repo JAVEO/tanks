@@ -21,6 +21,7 @@ public class Tank extends GameObject {
     private Explosion explosion;
     private Animation explosionAnimation;
     private float timeCounter = 0;
+	private MovementStrategy strategy;
 
     public Tank(Texture tankTexture, Controls controls, SpriteBatch batch, ControlType controlType, Animation explosionAnimation, TiledMap map) {
         this.controls = controls;
